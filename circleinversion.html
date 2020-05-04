@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+<title>Circle Inversion</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<canvas id="canvas" width="800" height="800"></canvas>
+<script>
+// Circle[({c1, c2} - {o1, o2})/oc*(oc r^2/(oc^2 - s^2)) + {o1, o2},
+// Abs[r^2 s/(oc^2 - s^2)]]
+// ref Geometric Inversion http://xahlee.info/SpecialPlaneCurves_dir/Inversion_dir/inversion.html
+
+let canvas = document.getElementById("canvas");
+let context = canvas.getContext("2d");
+let x = 0;
+let y = 0;
+
+let scale = 15;
+
+// 基準円
+let o1 = 0;
+let o2 = 0;
+let r  = 10;
+
+context.strokeStyle="black";
+
+for (let y = -30; y < 30; y++) {
+for (let x = -30; x < 30; x++) {
+	let c1 = x;
+	let c2 = y;
+	let s = 0.5;
+	let oc = Math.sqrt((o1 - c1)*(o1 - c1) + (o2 - c2)*(o2 - c2));
+	
+	let cx = (c1-o1)/oc * (oc * r*r/(oc * oc - s*s))+o1;
+	let cy = (c2-o2)/oc * (oc * r*r/(oc * oc - s*s))+o2;
+	let cr = r*r*s/(oc * oc - s*s); 
+
+	context.beginPath();
+	context.arc(canvas.width/2 + cx*scale, canvas.height /2 + cy*scale, cr*scale, 0, 2*Math.PI, false);
+	context.stroke();
+}
+}
+
+</script>
+</body>
+</html>
